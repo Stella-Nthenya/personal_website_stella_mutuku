@@ -20,6 +20,16 @@ def register_user():
     username = input("Enter username: ")
     email = input ("Enter your email: ")
     password = input("Input password: ")
+
+    # Check if the email already exists
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
+    existing_user = cursor.fetchone()
+
+    if existing_user:
+        print("Error: Email address already exists. Please choose a different email.")
+        return
+
     # Create a new user object
     new_user = User(username, email, password)
     new_user.save()
