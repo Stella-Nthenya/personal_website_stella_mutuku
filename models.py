@@ -127,3 +127,5 @@ class Service:
 
 # Close the connection
 conn.close()
+
+# pending - methods to retrieve data, update and delete records.
