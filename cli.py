@@ -23,3 +23,30 @@ def register_user():
     new_user = User(username, email, password)
     new_user.save()
     print("User registered successfully!")
+
+# function to login user
+def login_user():
+    print("User Login")
+    username_email = input("Enter username or email: ")
+    password = input("Enter password: ")
+
+    # Connect to the database
+    conn = connect_to_db()
+    cursor = conn.cursor()
+
+    # Check if the provided username or email exists in the database
+    cursor.execute("SELECT * FROM users WHERE username = ? OR email = ?", (username_email, username_email))
+    user = cursor.fetchone()
+
+    if user:
+        # Verifying the password
+        if user[3] == password:
+            print("Login successful!")
+        else:
+            print("Invalid password. Please try again.")
+    else:
+        print("User not found. Please register if you don't have an account.")
+
+    
+# Close the database connection
+    conn.close()
