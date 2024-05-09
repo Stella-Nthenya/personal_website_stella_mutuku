@@ -2,6 +2,7 @@ import sqlite3
 from models import User, BlogPost, Comment, Achievement, Service
 
 conn = sqlite3.connect('personal_website.db')
+cursor = conn.cursor()
 # functions I need
 # User - Register, login, view profile, delete account
 # The Blog - add, View, Delete and search posts and list posts by category
@@ -27,7 +28,7 @@ def register_user():
     existing_user = cursor.fetchone()
 
     if existing_user:
-        print("Error: Email address already exists. Please choose a different email.")
+        print("Error: Email address already exists. Login instead!")
         return
 
     # Create a new user object
@@ -58,12 +59,56 @@ def login_user():
     else:
         print("User not found. Please register if you don't have an account.")
 
-    
+#add post function   
+def add_post():
+    print("Add a New Blog Post")
+    title = input("Enter the title of the post: ")
+    user_id = input("Enter your user ID: ")
+
+    print("Enter post content (press Enter twice to finish):")
+    content_lines = []
+    while True:
+        line = input()
+        if line:
+            content_lines.append(line)
+        else:
+            break
+    content = '\n'.join(content_lines)
+
+    post = BlogPost(title, content, user_id)
+    post.save()
+    print("Post added successfully!")
+
+def view_posts():
+    cursor.execute("SELECT * FROM blog_posts")
+    posts = cursor.fetchall()
+    if posts:
+        for post in posts:
+            print(f"Title: {post[1]}\nContent: {post[2]}\nCreated At: {post[3]}")
+            print("-------------------------------")
+    else:
+        print("No posts found.")
+
+def delete_post():
+    title = input("Enter the title of the post to delete: ")
+    cursor.execute("SELECT id FROM blog_posts WHERE title=?", (title,))
+    post = cursor.fetchone()
+    if post:
+        post_id = post[0]
+        cursor.execute("DELETE FROM blog_posts WHERE id=?", (post_id,))
+        conn.commit()
+        print("Post deleted successfully!")
+    else:
+        print("Post not found with the given title.")
+
 
 
 ##calling the functions
-register_user()
-login_user()
+# register_user()
+# login_user()
+# add_post()
+# view_posts()
+# delete_post()
 
 # Close the connection
 conn.close()
