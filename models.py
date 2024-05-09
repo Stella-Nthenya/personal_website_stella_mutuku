@@ -125,7 +125,6 @@ class Service:
                        (self.title, self.description, self.user_id))
         conn.commit()
 
-# Close the connection
-conn.close()
+
 
 # pending - methods to retrieve data, update and delete records.

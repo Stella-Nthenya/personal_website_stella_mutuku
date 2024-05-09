@@ -1,6 +1,7 @@
 import sqlite3
 from models import User, BlogPost, Comment, Achievement, Service
 
+conn = sqlite3.connect('personal_website.db')
 # functions I need
 # User - Register, login, view profile, delete account
 # The Blog - add, View, Delete and search posts and list posts by category
@@ -48,5 +49,11 @@ def login_user():
         print("User not found. Please register if you don't have an account.")
 
     
-# Close the database connection
-    conn.close()
+
+
+##calling the functions
+register_user()
+login_user()
+
+# Close the connection
+conn.close()
