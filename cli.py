@@ -1,5 +1,5 @@
 import sqlite3
-from models import User, BlogPost, Comment, Achievement, Service
+from models import User, BlogPost, Skill
 
 conn = sqlite3.connect('personal_website.db')
 cursor = conn.cursor()
@@ -7,8 +7,8 @@ cursor = conn.cursor()
 # User - Register, login, view profile, delete account
 # The Blog - add, View, Delete and search posts and list posts by category
 # Comment -  add, view, edit and delete comment
-# Achievement - add, view, edit and delete achievement
-# Service - add, view, edit and delete achievement
+# portfolio - add, view, edit and delete portfolio
+# Service - add, view, edit and delete portfolio
 
 
 # Function to connect to the database
@@ -59,7 +59,7 @@ def login_user():
     else:
         print("User not found. Please register if you don't have an account.")
 
-#add post function   
+#add a blogpost function   
 def add_post():
     print("Add a New Blog Post")
     title = input("Enter the title of the post: ")
@@ -78,7 +78,7 @@ def add_post():
     post = BlogPost(title, content, user_id)
     post.save()
     print("Post added successfully!")
-
+#view blog posts function 
 def view_posts():
     cursor.execute("SELECT * FROM blog_posts")
     posts = cursor.fetchall()
@@ -88,7 +88,7 @@ def view_posts():
             print("-------------------------------")
     else:
         print("No posts found.")
-
+#delete a blog post function 
 def delete_post():
     title = input("Enter the title of the post to delete: ")
     cursor.execute("SELECT id FROM blog_posts WHERE title=?", (title,))
@@ -101,14 +101,53 @@ def delete_post():
     else:
         print("Post not found with the given title.")
 
+#skills and expertise
+def add_skill():
+    skill_name = input("Enter the skill name: ")
+    expertise_level = input("Enter the expertise level: ")
+    
+    skill = Skill(skill_name, expertise_level)
+    skill.save()
+    print(f"Skill '{skill_name}' added successfully.")
+
+def list_skills():
+    cursor.execute("SELECT * FROM skills")
+    skills = cursor.fetchall()
+
+    if skills:
+        print("Skills:")
+        for skill in skills:
+            print(f"Skill Name: {skill[1]}, Expertise Level: {skill[2]}")
+    else:
+        print("No skills found.")
+
+def delete_skill():
+    # Prompt the user for the skill name to delete
+    skill_name = input("Enter the skill name to delete: ")
+
+    cursor.execute("SELECT id FROM skills WHERE skill_name=?", (skill_name,))
+    skill = cursor.fetchone()
+
+    if skill:
+        skill_id = skill[0]
+        cursor.execute("DELETE FROM skills WHERE id=?", (skill_id,))
+        conn.commit()
+        print(f"Skill '{skill_name}' deleted successfully!")
+    else:
+        print(f"Skill '{skill_name}' not found.")
 
 
-##calling the functions
+
+#calling the functions
 # register_user()
 # login_user()
 # add_post()
 # view_posts()
 # delete_post()
+# add_skill()
+# list_skills()
+# delete_skill()
+# list_skills()
 
 # Close the connection
 conn.close()
