@@ -33,6 +33,6 @@ This application uses SQLite as its database. It contains tables for users, blog
 ## Model Classes
 
 - **User**: Represents a user of the application. It includes properties for username, email, and password.
-- **BlogPost**: Represents a blog post with properties such as title, content, creation date, and user ID.
-- **Comment**: Represents a comment on a blog post. It includes properties for content, creation date, user ID, and post ID.
+- **BlogPost**: Represents a blog post with properties such as title, content and user ID.
+- **Comment**: Represents a comment on a blog post. It includes properties for content, user ID, and post ID.
 - **Skill**: Represents a skill in the user's portfolio, with properties for skill name and expertise level.
